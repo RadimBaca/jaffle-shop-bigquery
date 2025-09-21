@@ -9,7 +9,7 @@ models:
     config:
       contract:
         enforced: true
-    latest_version: 2
+    latest_version: 1
     columns:
       - name: order_id
         data_type: string
@@ -70,8 +70,8 @@ models:
           alias: orders
       - v: 2
         columns:
-          - name: order_total
-            data_type: number
+          - name: order_sum
+            data_type: numeric
           - include: all
             exclude: [order_cost]
 
@@ -212,18 +212,18 @@ metrics:
     filter: |
       {{ Dimension('order_id__is_drink_order') }} = true
 
-saved_queries:
-  - name: order_metrics
-    query_params:
-      metrics:
-        - orders
-        - new_customer_orders
-        - order_total
-        - food_orders
-        - drink_orders
-      group_by:
-        - TimeDimension('metric_time', 'day')
-    exports:
-      - name: order_metrics
-        config:
-          export_as: table
+# saved_queries:
+#   - name: order_metrics
+#     query_params:
+#       metrics:
+#         - orders
+#         - new_customer_orders
+#         - order_total
+#         - food_orders
+#         - drink_orders
+#       group_by:
+#         - TimeDimension('metric_time', 'day')
+#     exports:
+#       - name: order_metrics
+#         config:
+#           export_as: table
