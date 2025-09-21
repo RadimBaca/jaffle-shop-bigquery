@@ -6,28 +6,62 @@ models:
           expression: "order_items_subtotal = subtotal"
       - dbt_utils.expression_is_true:
           expression: "order_total = subtotal + tax_paid"
+    config:
+      contract:
+        enforced: true
     columns:
       - name: order_id
+        data_type: string
         description: The unique key of the orders mart.
+        constraints:
+          - type: not_null
         data_tests:
           - not_null
           - unique
       - name: customer_id
+        data_type: string
         description: The foreign key relating to the customer who placed the order.
         data_tests:
           - relationships:
               to: ref('stg_customers')
               field: customer_id
       - name: order_total
+        data_type: numeric
         description: The total amount of the order in USD including tax.
       - name: ordered_at
+        data_type: timestamp
         description: The timestamp the order was placed at.
       - name: order_cost
+        data_type: numeric
         description: The sum of supply expenses to fulfill the order.
       - name: is_food_order
         description: A boolean indicating if this order included any food items.
+        data_type: boolean
       - name: is_drink_order
         description: A boolean indicating if this order included any drink items.
+        data_type: boolean
+      - name: location_id
+        data_type: string
+      - name: subtotal_cents
+        data_type: int64
+      - name: tax_paid_cents
+        data_type: int64
+      - name: order_total_cents
+        data_type: int64
+      - name: subtotal
+        data_type: numeric
+      - name: tax_paid
+        data_type: numeric
+      - name: order_items_subtotal
+        data_type: numeric
+      - name: count_food_items
+        data_type: int64
+      - name: count_drink_items
+        data_type: int64
+      - name: count_order_items
+        data_type: int64
+      - name: customer_order_number
+        data_type: int64
 
 unit_tests:
   - name: test_order_items_compute_to_bools_correctly
