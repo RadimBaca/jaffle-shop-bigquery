@@ -9,6 +9,7 @@ models:
     config:
       contract:
         enforced: true
+    latest_version: 2
     columns:
       - name: order_id
         data_type: string
@@ -215,3 +216,14 @@ saved_queries:
       - name: order_metrics
         config:
           export_as: table
+
+versions:
+  - v: 1
+    config:
+      alias: orders
+  - v: 2
+    columns:
+      - name: order_total
+        data_type: number
+      - include: all
+        exclude: [order_cost]
